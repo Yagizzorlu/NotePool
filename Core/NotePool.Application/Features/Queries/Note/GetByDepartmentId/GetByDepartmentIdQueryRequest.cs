@@ -1,0 +1,17 @@
+﻿using MediatR;
+using NotePool.Application.Features.Queries.Note.GetByDepartmentId;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NotePool.Application.Features.Queries.Note.GetByDepartmentId
+{
+    public class GetByDepartmentIdQueryRequest : IRequest<GetByDepartmentIdQueryResponse>
+    {
+        public Guid DepartmentId { get; set; }
+        public int Page { get; set; } = 0;
+        public int Size { get; set; } = 10;
+    }
+}

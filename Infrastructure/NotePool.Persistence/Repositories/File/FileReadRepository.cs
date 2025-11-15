@@ -1,0 +1,18 @@
+﻿using NotePool.Application.Repositories;
+using NotePool.Persistence.Contexts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NotePool.Persistence.Repositories
+{
+    public class FileReadRepository : ReadRepository<NotePool.Domain.Entities.File>, IFileReadRepository
+    {
+        public FileReadRepository(NotePoolDbContext context) : base(context) 
+        {
+
+        }
+    }
+}
