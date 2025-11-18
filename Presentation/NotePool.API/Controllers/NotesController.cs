@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,12 +9,15 @@ using NotePool.Application.Features.Commands.Note.RemoveNote;
 using NotePool.Application.Features.Commands.Note.UpdateNote;
 using NotePool.Application.Features.Commands.NotePdfFile.RemoveNotePdfFile;
 using NotePool.Application.Features.Commands.NotePdfFile.UploadNotePdfFile;
+using NotePool.Application.Features.Queries.Note.GetAllNote;
 using NotePool.Application.Features.Queries.Note.GetByCourseId;
 using NotePool.Application.Features.Queries.Note.GetByDepartmentId;
-using NotePool.Application.Features.Queries.Note.GetByInstitutionId;
-using NotePool.Application.Features.Queries.Note.GetAllNote;
 using NotePool.Application.Features.Queries.Note.GetByIdNote;
-using NotePool.Application.Features.Queries.NotePdfFile.GetNotePdfFiles;
+using NotePool.Application.Features.Queries.Note.GetByInstitutionId;
+using NotePool.Application.Features.Queries.Note.GetByUserId;
+using NotePool.Application.Features.Queries.Note.GetMyNotes;
+using NotePool.Application.Features.Queries.Note.GetNotesByUserId;
+using NotePool.Application.Features.Queries.Note.SearchNotes;
 using NotePool.Application.Repositories;
 using NotePool.Application.RequestParameters;
 using NotePool.Application.ViewModels.Notes;
@@ -21,8 +25,6 @@ using NotePool.Domain.Entities;
 using System.Net;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
-using NotePool.Application.Features.Queries.Note.SearchNotes;
-using Microsoft.AspNetCore.Authorization;
 
 namespace NotePool.API.Controllers
 {
@@ -31,30 +33,11 @@ namespace NotePool.API.Controllers
     [Authorize(AuthenticationSchemes = "Admin")]
     public class NotesController : ControllerBase
     {
-        readonly private INoteWriteRepository _noteWriteRepository;
-        readonly private INoteReadRepository _noteReadRepository;
-        readonly private IWebHostEnvironment _webHostEnvironment;
-        readonly IFileWriteRepository _fileWriteRepository;
-        readonly IFileReadRepository _fileReadRepository;
-        readonly INotePdfFileWriteRepository _notePdfFileWriteRepository;
-        readonly INotePdfFileReadRepository _notePdfFileReadRepository;
-        readonly IStorageService _storageService;
-        readonly IConfiguration configuration;
-
 
         readonly IMediator _mediator;
 
-        public NotesController(INoteWriteRepository noteWriteRepository, INoteReadRepository noteReadRepository, IWebHostEnvironment webHostEnvironment, IFileWriteRepository fileWriteRepository, IFileReadRepository fileReadRepository, INotePdfFileWriteRepository notePdfFileWriteRepository, INotePdfFileReadRepository notePdfFileReadRepository, IStorageService storageService, IConfiguration configuration, IMediator mediator)
+        public NotesController(IMediator mediator)
         {
-            _noteWriteRepository = noteWriteRepository;
-            _noteReadRepository = noteReadRepository;
-            _webHostEnvironment = webHostEnvironment;
-            _fileWriteRepository = fileWriteRepository;
-            _fileReadRepository = fileReadRepository;
-            _notePdfFileWriteRepository = notePdfFileWriteRepository;
-            _notePdfFileReadRepository = notePdfFileReadRepository;
-            _storageService = storageService;
-            this.configuration = configuration;
             _mediator = mediator;
         }
 
@@ -93,44 +76,11 @@ namespace NotePool.API.Controllers
             return Ok(response);
         }
 
-
-        [HttpPost("[action]")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Upload([FromForm] UploadNotePdfFileCommandRequest uploadNotePdfFileCommandRequest)
-        {
-            uploadNotePdfFileCommandRequest.Files = Request.Form.Files;
-            UploadNotePdfFileCommandResponse response =  await _mediator.Send(uploadNotePdfFileCommandRequest);
-            return Ok(response);
-        }
-
-        [HttpPost("[action]")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> UploadNotePdf([FromForm] UploadNotePdfFileCommandRequest request)
-        {
-            var response = await _mediator.Send(request);
-            return Ok(response);
-        }
-
         [HttpPost("create-with-pdf")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> CreateWithPdf([FromForm] CreateNoteCommandRequest createNoteCommandRequest)
         {
             var response = await _mediator.Send(createNoteCommandRequest);
-            return Ok(response);
-        }
-
-        [HttpGet("[action]/{Id}")]
-        public async Task<IActionResult> GetNoteFiles([FromRoute] GetNotePdfFilesQueryRequest getNotePdfFilesQueryRequest)
-        {
-            List<GetNotePdfFilesQueryResponse> response = await _mediator.Send(getNotePdfFilesQueryRequest);
-            return Ok(response);
-        }
-
-        [HttpDelete("[action]/{Id}")]
-        public async Task<IActionResult> DeleteNoteFile([FromRoute] RemoveNotePdfFileCommandRequest removeNotePdfFileCommandRequest, [FromQuery] string fileId )
-        {
-            removeNotePdfFileCommandRequest.FileId = fileId;
-            RemoveNotePdfFileCommandResponse response = await _mediator.Send(removeNotePdfFileCommandRequest);
             return Ok(response);
         }
 
@@ -155,10 +105,25 @@ namespace NotePool.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("by-user/{UserId}")]
+        public async Task<IActionResult> Get([FromRoute] GetByUserIdQueryRequest getByUserIdQueryRequest)
+        {
+            GetByUserIdQueryResponse response = await _mediator.Send(getByUserIdQueryRequest);
+            return Ok(response);
+        }
+
         [HttpPost("search")]
         public async Task<IActionResult> Search([FromBody] SearchNotesQueryRequest request)
         {
             SearchNotesQueryResponse response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
+        [HttpGet("my-notes")]
+        public async Task<IActionResult> GetMyNotes([FromQuery] GetMyNotesQueryRequest request)
+        {
+            GetMyNotesQueryResponse response = await _mediator.Send(request);
+
             return Ok(response);
         }
     }

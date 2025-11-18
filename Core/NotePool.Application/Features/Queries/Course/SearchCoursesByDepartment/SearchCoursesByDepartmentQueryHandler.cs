@@ -38,7 +38,8 @@ namespace Application.Features.Courses.Queries.SearchByDepartment
             }
             var totalCount = await filteredByDeptQuery.CountAsync(cancellationToken);
             var courseList = await filteredByDeptQuery
-                .OrderBy(c => c.Name) 
+                .OrderBy(c => c.Name)
+                .Skip(request.Page * request.PageSize)
                 .Take(request.PageSize) 
                 .Select(course => new
                 {

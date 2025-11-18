@@ -13,6 +13,8 @@ namespace NotePool.Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? ProfileImage { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenEndDate { get; set; }
         public Guid InstitutionId { get; set; }
         public Guid DepartmentId { get; set; }
         public Institution Institution { get; set; }

@@ -27,5 +27,6 @@ namespace NotePool.Domain.Entities
         public ICollection<Reaction> Reactions { get; set; }
         public ICollection<Bookmark> Bookmarks { get; set; }
         public ICollection<NotePdfFile> NotePdfFiles { get; set; }
+        public ICollection<NoteDownload> NoteDownloads { get; set; }
     }
 }

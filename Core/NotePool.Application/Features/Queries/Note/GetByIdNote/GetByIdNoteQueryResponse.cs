@@ -18,12 +18,17 @@ namespace NotePool.Application.Features.Queries.Note.GetByIdNote
         public int ViewCount { get; set; }
         public int DownloadCount { get; set; }
         public int CommentCount { get; set; }
+        public int ReplyCount { get; set; }
         public int LikeCount { get; set; }
 
         public Guid AuthorId { get; set; }
+        public bool IsBookmarked { get; set; }
         public string AuthorName { get; set; }
 
         public object PdfFiles { get; set; }
         public object Comments { get; set; }
+        public object Reactions { get; set; }
+        public object Bookmarks { get; set; }
+        public bool IsDownloaded { get; set; }
     }
 }

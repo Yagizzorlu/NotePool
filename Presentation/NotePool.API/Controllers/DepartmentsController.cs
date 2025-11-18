@@ -1,13 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NotePool.Application.Features.Commands.Department.AddDepartment;
 using NotePool.Application.Features.Commands.Department.RemoveDepartment;
 using NotePool.Application.Features.Commands.Department.UpdateDepartment;
-using NotePool.Application.Features.Queries.Department.SearchDepartmentsByInstitution;
 using NotePool.Application.Features.Queries.Department.GetAllDepartment;
 using NotePool.Application.Features.Queries.Department.GetByIdDepartment;
 using NotePool.Application.Features.Queries.Department.GetByInstitutionId;
+using NotePool.Application.Features.Queries.Department.SearchDepartmentsByInstitution;
 using NotePool.Application.Repositories;
 using System.Net;
 
@@ -15,6 +16,7 @@ namespace NotePool.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Admin")]
     public class DepartmentsController : ControllerBase
     {
         private readonly IDepartmentReadRepository _departmentReadRepository;
@@ -48,6 +50,7 @@ namespace NotePool.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery] GetAllDepartmentQueryRequest getAllDepartmentQueryRequest)
         {
             GetAllDepartmentQueryResponse response = await _mediator.Send(getAllDepartmentQueryRequest);
@@ -62,6 +65,7 @@ namespace NotePool.API.Controllers
         }
 
         [HttpGet("by-institution/{InstitutionId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get([FromRoute] GetByInstitutionIdQueryRequest getByInstitutionIdQueryRequest)
         {
             GetByInstitutionIdQueryResponse response = await _mediator.Send(getByInstitutionIdQueryRequest);
@@ -69,6 +73,7 @@ namespace NotePool.API.Controllers
         }
 
         [HttpPost("search")]
+        [AllowAnonymous]
         public async Task<IActionResult> Search([FromBody] SearchDepartmentsByInstitutionQueryRequest request)
         {
             SearchDepartmentsByInstitutionQueryResponse response = await _mediator.Send(request);

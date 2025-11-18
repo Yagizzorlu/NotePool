@@ -12,5 +12,6 @@ namespace NotePool.Application.Features.Queries.Department.SearchDepartmentsByIn
         public Guid InstitutionId { get; set; }
         public string SearchTerm { get; set; }
         public int PageSize { get; set; }
-    }
+        public int Page { get; set; }
+        }
 }

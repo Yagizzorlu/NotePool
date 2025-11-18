@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using NotePool.Application.Features.Queries.Department.GetAllDepartment;
 using NotePool.Application.Repositories;
 using NotePool.Domain.Entities;
 using System;

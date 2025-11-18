@@ -208,6 +208,8 @@ namespace NotePool.Persistence.Migrations
 
                     b.HasIndex("NoteId");
 
+                    b.HasIndex("ParentId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
@@ -401,6 +403,9 @@ namespace NotePool.Persistence.Migrations
                     b.Property<Guid>("NoteId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("NoteId1")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -411,7 +416,10 @@ namespace NotePool.Persistence.Migrations
 
                     b.HasIndex("NoteId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("NoteId1");
+
+                    b.HasIndex("UserId", "NoteId")
+                        .IsUnique();
 
                     b.ToTable("NoteDownloads");
                 });
@@ -428,20 +436,21 @@ namespace NotePool.Persistence.Migrations
                     b.Property<Guid>("NoteId")
                         .HasColumnType("uuid");
 
+                    b.Property<short>("Type")
+                        .HasColumnType("smallint");
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<short>("Value")
-                        .HasColumnType("smallint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NoteId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "NoteId")
+                        .IsUnique();
 
                     b.ToTable("Reactions");
                 });
@@ -505,6 +514,12 @@ namespace NotePool.Persistence.Migrations
 
                     b.Property<string>("ProfileImage")
                         .HasColumnType("text");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RefreshTokenEndDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -622,13 +637,20 @@ namespace NotePool.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("NotePool.Domain.Entities.Comment", "Parent")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("NotePool.Domain.Entities.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Note");
+
+                    b.Navigation("Parent");
 
                     b.Navigation("User");
                 });
@@ -698,10 +720,14 @@ namespace NotePool.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("NotePool.Domain.Entities.Note", null)
+                        .WithMany("NoteDownloads")
+                        .HasForeignKey("NoteId1");
+
                     b.HasOne("NotePool.Domain.Entities.User", "User")
                         .WithMany("NoteDownloads")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Note");
@@ -720,7 +746,7 @@ namespace NotePool.Persistence.Migrations
                     b.HasOne("NotePool.Domain.Entities.User", "User")
                         .WithMany("Reactions")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Note");
@@ -758,6 +784,11 @@ namespace NotePool.Persistence.Migrations
                     b.Navigation("Note");
                 });
 
+            modelBuilder.Entity("NotePool.Domain.Entities.Comment", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
             modelBuilder.Entity("NotePool.Domain.Entities.Course", b =>
                 {
                     b.Navigation("Notes");
@@ -778,6 +809,8 @@ namespace NotePool.Persistence.Migrations
                     b.Navigation("Bookmarks");
 
                     b.Navigation("Comments");
+
+                    b.Navigation("NoteDownloads");
 
                     b.Navigation("NotePdfFiles");
 

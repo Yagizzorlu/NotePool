@@ -1,12 +1,12 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using NotePool.Application.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using I = NotePool.Domain.Entities;
+using NotePool.Domain.Entities.Enums;
 
 namespace NotePool.Application.Features.Queries.Institution.GetByIdInstitution
 {
@@ -22,12 +22,25 @@ namespace NotePool.Application.Features.Queries.Institution.GetByIdInstitution
         public async Task<GetByIdInstitutionQueryResponse> Handle(GetByIdInstitutionQueryRequest request, CancellationToken cancellationToken)
         {
             var query = _institutionReadRepository.GetAll(false);
+
             I.Institution institution = await query
-                .Include(i => i.Departments) 
-                .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken); 
+                .Include(i => i.Departments)
+                    .ThenInclude(d => d.Courses)
+                        .ThenInclude(c => c.Notes)
+                            .ThenInclude(n => n.Reactions)
+                .Include(i => i.Departments)
+                    .ThenInclude(d => d.Courses)
+                        .ThenInclude(c => c.Notes)
+                            .ThenInclude(n => n.Comments)
+                .Include(i => i.Departments)
+                    .ThenInclude(d => d.Courses)
+                        .ThenInclude(c => c.Notes)
+                            .ThenInclude(n => n.NoteDownloads)
+                .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
+
             if (institution == null)
             {
-                return null; 
+                return null;
             }
 
             return new GetByIdInstitutionQueryResponse
@@ -40,9 +53,15 @@ namespace NotePool.Application.Features.Queries.Institution.GetByIdInstitution
                     {
                         dept.Id,
                         dept.Name,
-                        dept.Code
+                        dept.Code,
+
+                        CourseCount = dept.Courses.Count(),
+                        TotalNoteCount = dept.Courses.SelectMany(c => c.Notes).Count(),
+                        TotalLikeCount = dept.Courses.SelectMany(c => c.Notes).SelectMany(n => n.Reactions).Count(r => r.Type == ReactionType.Like),
+                        TotalCommentCount = dept.Courses.SelectMany(c => c.Notes).SelectMany(n => n.Comments).Count(),
+                        TotalDownloadCount = dept.Courses.SelectMany(c => c.Notes).SelectMany(n => n.NoteDownloads).Count() 
                     })
-                    .OrderBy(d => d.Name) 
+                    .OrderBy(d => d.Name)
                     .ToList()
             };
         }

@@ -1,9 +1,6 @@
 ﻿using NotePool.Domain.Entities.Common;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NotePool.Domain.Entities
 {
@@ -13,8 +10,10 @@ namespace NotePool.Domain.Entities
         public Guid NoteId { get; set; }
         public string Content { get; set; }
         public Guid? ParentId { get; set; }
+        public Comment Parent { get; set; }
+        public ICollection<Comment> Replies { get; set; }
         public User User { get; set; }
         public Note Note { get; set; }
     }
-
 }
+

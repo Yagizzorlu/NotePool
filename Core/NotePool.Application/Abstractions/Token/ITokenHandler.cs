@@ -1,4 +1,5 @@
 ﻿using NotePool.Application.DTOs;
+using NotePool.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace NotePool.Application.Abstractions.Token
 {
     public interface ITokenHandler
     {
-        DTOs.Token CreateAccessToken(int minute);
+        DTOs.Token CreateAccessToken(int second, User user);
+        string CreateRefreshToken(User User);
     }
 }

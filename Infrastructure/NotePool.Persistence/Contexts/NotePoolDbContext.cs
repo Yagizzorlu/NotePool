@@ -32,106 +32,102 @@ namespace NotePool.Persistence.Contexts
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<NotePdfFile>()
-              .HasOne(npf => npf.Note)
-              .WithMany(n => n.NotePdfFiles)
-              .HasForeignKey(npf => npf.NoteId)
-              .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(npf => npf.Note)
+                .WithMany(n => n.NotePdfFiles)
+                .HasForeignKey(npf => npf.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<NotePdfFile>()
-              .Property(npf => npf.FileName)
-              .IsRequired();
+                .Property(npf => npf.FileName)
+                .IsRequired();
 
             modelBuilder.Entity<NotePdfFile>()
-              .Property(npf => npf.Path)
-              .IsRequired();
+                .Property(npf => npf.Path)
+                .IsRequired();
 
             modelBuilder.Entity<Department>()
-              .HasOne(d => d.Institution)
-              .WithMany(i => i.Departments)
-              .HasForeignKey(d => d.InstitutionId)
-              .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(d => d.Institution)
+                .WithMany(i => i.Departments)
+                .HasForeignKey(d => d.InstitutionId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<User>()
-               .HasOne(u => u.Institution)
-               .WithMany()
-               .HasForeignKey(u => u.InstitutionId)
-               .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(u => u.Institution)
+                .WithMany()
+                .HasForeignKey(u => u.InstitutionId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Note>()
-              .HasOne(n => n.Institution)
-              .WithMany()
-              .HasForeignKey(n => n.InstitutionId)
-              .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(n => n.Institution)
+                .WithMany()
+                .HasForeignKey(n => n.InstitutionId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Course>()
-              .HasOne(c => c.Department)
-              .WithMany(d => d.Courses)
-              .HasForeignKey(c => c.DepartmentId)
-              .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(c => c.Department)
+                .WithMany(d => d.Courses)
+                .HasForeignKey(c => c.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<User>()
-              .HasOne(u => u.Department)
-              .WithMany()
-              .HasForeignKey(u => u.DepartmentId)
-              .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(u => u.Department)
+                .WithMany()
+                .HasForeignKey(u => u.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Note>()
-              .HasOne(n => n.Department)
-              .WithMany()
-              .HasForeignKey(n => n.DepartmentId)
-              .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(n => n.Department)
+                .WithMany()
+                .HasForeignKey(n => n.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Note>()
-              .HasOne(n => n.Course)
-              .WithMany(c => c.Notes)
-              .HasForeignKey(n => n.CourseId)
-              .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(n => n.Course)
+                .WithMany(c => c.Notes)
+                .HasForeignKey(n => n.CourseId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Note>()
-            .HasOne(n => n.User)
-            .WithMany(u => u.Notes)
-            .HasForeignKey(n => n.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
+                .HasOne(n => n.User)
+                .WithMany(u => u.Notes)
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Comment>()
-              .HasOne(c => c.Note)
-              .WithMany(n => n.Comments)
-              .HasForeignKey(c => c.NoteId)
-              .OnDelete(DeleteBehavior.Cascade);
-
+                .HasOne(c => c.Note)
+                .WithMany(n => n.Comments)
+                .HasForeignKey(c => c.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Reaction>()
-              .HasOne(r => r.Note)
-              .WithMany(n => n.Reactions)
-              .HasForeignKey(r => r.NoteId)
-              .OnDelete(DeleteBehavior.Cascade);
-
+                .HasOne(r => r.Note)
+                .WithMany(n => n.Reactions)
+                .HasForeignKey(r => r.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Bookmark>()
-              .HasOne(b => b.Note)
-              .WithMany(n => n.Bookmarks)
-              .HasForeignKey(b => b.NoteId)
-              .OnDelete(DeleteBehavior.Cascade);
-
+                .HasOne(b => b.Note)
+                .WithMany(n => n.Bookmarks)
+                .HasForeignKey(b => b.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<NoteDownload>()
-              .HasOne(nd => nd.Note)
-              .WithMany()
-              .HasForeignKey(nd => nd.NoteId)
-              .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(nd => nd.Note)
+                .WithMany()
+                .HasForeignKey(nd => nd.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.User)
                 .WithMany(u => u.Comments)
                 .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Reaction>()
                 .HasOne(r => r.User)
                 .WithMany(u => u.Reactions)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Bookmark>()
                 .HasOne(b => b.User)
@@ -143,9 +139,34 @@ namespace NotePool.Persistence.Contexts
                 .HasOne(nd => nd.User)
                 .WithMany(u => u.NoteDownloads)
                 .HasForeignKey(nd => nd.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
+                .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Reaction>()
+                .HasIndex(r => new { r.UserId, r.NoteId })
+                .IsUnique();
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(reply => reply.Parent)
+                .WithMany(parent => parent.Replies)
+                .HasForeignKey(reply => reply.ParentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<NoteDownload>()
+                .HasOne(nd => nd.Note)
+                .WithMany()
+                .HasForeignKey(nd => nd.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<NoteDownload>()
+                .HasOne(nd => nd.User)
+                .WithMany(u => u.NoteDownloads)
+                .HasForeignKey(nd => nd.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<NoteDownload>()
+                .HasIndex(nd => new { nd.UserId, nd.NoteId })
+                .IsUnique();
+        }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) //parametresiz
         {

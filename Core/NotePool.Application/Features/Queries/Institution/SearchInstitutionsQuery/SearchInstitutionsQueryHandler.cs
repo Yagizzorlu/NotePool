@@ -35,6 +35,7 @@ namespace NotePool.Application.Features.Queries.Institution.Search
 
             var institutionList = await query
                 .OrderBy(i => i.Name)
+                .Skip(request.Page * request.PageSize) 
                 .Take(request.PageSize)
                 .Select(institution => new
                 {

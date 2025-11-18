@@ -11,6 +11,7 @@ namespace NotePool.Application.Features.Queries.Course.SearchCoursesByDepartment
     {
         public Guid DepartmentId { get; set; }
         public string SearchTerm { get; set; }
+        public int Page { get; set; }
         public int PageSize { get; set; }
     }
 }

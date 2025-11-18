@@ -13,6 +13,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.PostgreSQL" Version="2.3.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
   </ItemGroup>
@@ -21,6 +25,11 @@
     <ProjectReference Include="..\..\Core\NotePool.Application\NotePool.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\NotePool.Infrastructure\NotePool.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\NotePool.Persistence\NotePool.Persistence.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\NotePool.SignalR\NotePool.SignalR.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Middlewares\" />
   </ItemGroup>
 
 </Project>

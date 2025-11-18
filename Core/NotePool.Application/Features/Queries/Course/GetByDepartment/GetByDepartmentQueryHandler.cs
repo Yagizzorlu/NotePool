@@ -30,7 +30,6 @@ namespace NotePool.Application.Features.Queries.Course.GetByDepartment
                 .OrderBy(c => c.Name)
                 .Select(course => new
                 {
-
                     course.Id,
                     course.Name,
                     course.Year,

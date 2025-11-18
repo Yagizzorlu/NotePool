@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotePool.API", "Presentation\NotePool.API\NotePool.API.csproj", "{446B6627-CAC2-4C31-8553-B543DD9BE23C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotePool.SignalR", "Infrastructure\NotePool.SignalR\NotePool.SignalR.csproj", "{07B3DE91-CFF1-4179-92FE-60510CB95DFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{446B6627-CAC2-4C31-8553-B543DD9BE23C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{446B6627-CAC2-4C31-8553-B543DD9BE23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{446B6627-CAC2-4C31-8553-B543DD9BE23C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07B3DE91-CFF1-4179-92FE-60510CB95DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07B3DE91-CFF1-4179-92FE-60510CB95DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07B3DE91-CFF1-4179-92FE-60510CB95DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07B3DE91-CFF1-4179-92FE-60510CB95DFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{5A08C893-06CB-4BCB-9819-E9EC17360727} = {47AA6B4D-DA09-4C57-8076-3CF005C2FF75}
 		{42E07BBD-6D92-4A5B-9F42-BDD651039B78} = {47AA6B4D-DA09-4C57-8076-3CF005C2FF75}
 		{446B6627-CAC2-4C31-8553-B543DD9BE23C} = {F7F8EB76-B955-468E-A38B-55B997FF72E8}
+		{07B3DE91-CFF1-4179-92FE-60510CB95DFC} = {47AA6B4D-DA09-4C57-8076-3CF005C2FF75}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AFDFEF17-DBC6-4361-9CA6-68692295FC12}

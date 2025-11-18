@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NotePool.Application.Abstractions.Services;
+using NotePool.Application.Abstractions.Services.Authentications;
 using NotePool.Application.Repositories;
 using NotePool.Domain.Entities;
 using NotePool.Persistence.Contexts;
 using NotePool.Persistence.Repositories;
+using NotePool.Persistence.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,14 +51,22 @@ namespace NotePool.Persistence
             services.AddScoped<IReactionReadRepository, ReactionReadRepository>();
             services.AddScoped<IReactionWriteRepository, ReactionWriteRepository>();
 
-            //services.AddScoped<IUserReadRepository, UserReadRepository>();
-            //services.AddScoped<IUserWriteRepository, UserWriteRepository>();
+            services.AddScoped<IUserReadRepository, UserReadRepository>();
+            services.AddScoped<IUserWriteRepository, UserWriteRepository>();
 
             services.AddScoped<IFileReadRepository, FileReadRepository>();
             services.AddScoped<IFileWriteRepository, FileWriteRepository>();
 
+            services.AddScoped<INoteDownloadReadRepository, NoteDownloadReadRepository>();
+            services.AddScoped<INoteDownloadWriteRepository, NoteDownloadWriteRepository>();
+
             services.AddScoped<INotePdfFileReadRepository, NotePdfFileReadRepository>();
             services.AddScoped<INotePdfFileWriteRepository, NotePdfFileWriteRepository>();
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IExternalAuthentication, AuthService>();
+            services.AddScoped<IInternalAuthentication, AuthService>();
         }
     }
 }

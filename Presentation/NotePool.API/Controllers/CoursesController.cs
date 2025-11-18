@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NotePool.Application.Features.Commands.Course.AddCourse;
@@ -16,6 +17,7 @@ namespace NotePool.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Admin")]
     public class CoursesController : ControllerBase
     {
         private readonly ICourseReadRepository _courseReadRepository;
